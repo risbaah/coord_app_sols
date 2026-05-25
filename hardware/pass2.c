@@ -8,10 +8,17 @@
 
 int hash(char *input)
 {
-    long long p     = 131;
-    long long m     = 1000000007LL;
-    long long hashVal   = 0;
-    long long p_pow = 1;
+    long long p = 131;
+    long long m;
+
+    FILE *fp = fopen("modulus", "r");
+    if (fp) {
+        fscanf(fp, "%lld", &m);
+        fclose(fp);
+    }
+
+    long long hashVal = 0;
+    long long p_pow   = 1;
     for (int i = 0; i < 4; i++) {
         hashVal = (hashVal + (unsigned char)input[i] * p_pow) % m;
         p_pow   = (p_pow * p) % m;
