@@ -4,20 +4,24 @@
 
 int hash(char *input)
 {
-
     long long p = 131;
-    long long m = 1000000007;
-    long long hashVal = 0;
-    long long p_pow = 1;
+    long long m;
 
-    for (int i = 0; i < 4; i++)
-    {
-        hashVal = (hashVal + input[i] * p_pow) % m;
-        p_pow = (p_pow * p) % m;
+    FILE *fp = fopen("modulus", "r");
+    if (fp) {
+        fscanf(fp, "%lld", &m);
+        fclose(fp);
     }
 
+    long long hashVal = 0;
+    long long p_pow   = 1;
+    for (int i = 0; i < 4; i++) {
+        hashVal = (hashVal + (unsigned char)input[i] * p_pow) % m;
+        p_pow   = (p_pow * p) % m;
+    }
     return (int)hashVal;
 }
+
 
 int regcheck(char *password) {
     if (strlen(password) != 4)
